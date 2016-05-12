@@ -7,13 +7,15 @@
 
 ;; By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.
 
+
 (defn fibonacci [limit]
-  (loop [acc [1 2]]
-    (if (> (last acc) limit)
+  (loop [n 1 sum 2 acc [1 2]]
+    (if (>= (last acc) limit)
       (butlast acc)
-      (recur (conj acc (reduce + (take-last 2 acc)))))))
+      (let [fib (+ n sum)]
+        (recur sum fib (conj acc fib))))))
 
 (defn fibonacci-summer [limit]
   (r/fold + (r/filter even? (fibonacci limit))))
 
-(fibonacci-summer 4000000)
+(time (fibonacci-summer 4000000))
